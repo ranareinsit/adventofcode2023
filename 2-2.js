@@ -7,21 +7,14 @@ let stub = [
     'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
     'Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red',
     'Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red',
-    'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green'
+    'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green',
 ]
 
-let hm = {
-    red: 12,
-    green: 13,
-    blue: 14,
-}
-
-// 
 const main = input => input
     .reduce((a, e, i) => {
+        // https://adventofcode.com/2023/day/2
         let result = {
             index: i + 1,
-            fit: true
         }
         let string = e
         let header = /Game [0-9]+: /;
@@ -34,30 +27,25 @@ const main = input => input
                 return a
             }, {})
         })
+        let hm = {
+            red: 0,
+            green: 0,
+            blue: 0,
+        }
         for (let j = 0; j < sets.length; j++) {
             let set = sets[j]
-            let hm = {
-                red: 12,
-                green: 13,
-                blue: 14,
-            }
             for (let c in hm) {
                 if (c in set == false) continue
-                hm[c] = hm[c] - set[c]
-                if (hm[c] < 0) {
-                    result.fit = false
-                    break
-                }
-                if (result.fit == false) break
+                hm[c] = Math.max(hm[c], set[c])
             }
-            if (result.fit == false) break
         }
-        console.log(result.index)
+        let power = hm.red * hm.green * hm.blue
+        result = { ...result, power }
+        console.log(hm)
         a.push(result)
         return a
     }, [])
-    .filter(game => game.fit)
-    .reduce((a, e) => a + e.index, 0)
+    .reduce((a, e) => a + e.power, 0)
 
-// console.log(`result: `, main(stub)) // 8
-console.log(main(data)) // 1853
+// console.log(`result: `, main(stub)) //2286
+console.log(main(data)) // 72706
