@@ -29,7 +29,7 @@ const main = (input) => {
     let r = 0
     // left - win | right - have
     for (let i = 0; i < input.length; i++) {
-        let result = (0)
+        let result = 0
         let [win, have] = extract_data(input[i])
         let { found } = have.reduce((a, e, i) => {
             let r = a.remaining.indexOf(e)
@@ -38,20 +38,12 @@ const main = (input) => {
                 a.remaining[r] = -1
             }
             return a
-
         }, { found: [], remaining: [...win] })
-        // console.log(found)
-        for (let i = 1; i <= found.length; i++) {
-            if (i == 1) result++
-            if (i > 1) {
-                result *= 2
-            }
-        }
+        result = found.length == 0 ? 0 : Math.pow(2, found.length - 1)
         r += result
     }
-    // console.log(result)
     return r
 }
 
 console.log(main(stub)) // 13
-console.log(main(data)) // 21105
+// console.log(main(data)) // 21105
